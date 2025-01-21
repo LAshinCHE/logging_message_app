@@ -1,6 +1,5 @@
 // log_library.cpp
 #include "log_library.h"
-#include "record.h" 
 #include <fstream>
 #include <iostream>
 #include <stdexcept>

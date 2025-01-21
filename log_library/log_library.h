@@ -2,7 +2,9 @@
 #ifndef LOG_LIBRARY_H
 #define LOG_LIBRARY_H
 
+#include "record.h"
 #include <string>
+#include <vector>
 
 #ifdef _WIN32
     #ifdef LOG_LIBRARY_EXPORTS
@@ -20,9 +22,10 @@ public:
     ~Logger();
 
     void LogMessage(const std::string& message, int messageLevel);
-    void ChangeMessageLevel(int newLevel);
+    void ChangeMessageLevel(const std::string& message, const int& newLevel);
+
 private:
-    std::vector<Record> ReadAllMessageI();
+    std::vector<Record> ReadAllMessage();
 
 private:
     std::string logFilePath;

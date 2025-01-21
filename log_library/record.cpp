@@ -1,11 +1,9 @@
+//record.cpp
 #include "record.h"
-
 
 Record::Record(const std::string&message, int importanceLevel, time_t data) : message(message), importanceLevel(importanceLevel), data(data) {};
 
-Record::~Record(){
-
-}
+Record::~Record(){}
 
 std::string Record::toCSV() const {
     std::string timeStr = std::ctime(&data);
