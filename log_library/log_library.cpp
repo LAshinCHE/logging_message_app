@@ -6,16 +6,17 @@
 #include <vector>
 #include <ctime>
 
+// Контсруктор, открывает или создает файл
 Logger::Logger(const std::string& filePath) : logFilePath(filePath) {
-    // Проверяем, можно ли открыть файл
-    std::ofstream file(logFilePath, std::ios::app);
+    std::ofstream file(logFilePath, std::ios::out | std::ios::app);
     if (!file.is_open()) {
         throw std::runtime_error("Unable to open log file: " + logFilePath);
     }
 }
 
+
+// Деструктор
 Logger::~Logger() {
-    // Деструктор, если требуется, можно добавить логику для очистки ресурсов
 }
 
 void Logger::LogMessage(const std::string& message, int messageLevel) {

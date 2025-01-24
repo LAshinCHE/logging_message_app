@@ -5,9 +5,7 @@
 #include <queue>
 #include <mutex>
 #include <condition_variable>
-#include <atomic>
-
-// Потокобезопасная очередь для сообщений
+#include <atomic>g
 struct LogEntry {
     std::string message;
     int importanceLevel;
@@ -61,7 +59,6 @@ int main(int argc, char* argv[]) {
     std::string logFile = argv[1];
     int defaultLevel = std::stoi(argv[2]);
 
-    // Создаем объект логгера
     Logger logger(logFile);
 
     // Создание потокобезопасной очереди и фоновый поток
@@ -116,7 +113,6 @@ int main(int argc, char* argv[]) {
             }
         }
 
-        // Передача сообщения в очередь
         logQueue.push({message, level});
     }
 

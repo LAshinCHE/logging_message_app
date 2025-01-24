@@ -1,23 +1,50 @@
-CC = g++
-CFLAGS = -Wall -Wextra -fPIC
+# Компилятор и флаги
+CXX = g++
+CXXFLAGS = -std=c++17 -Wall -fPIC
 LDFLAGS = -shared
 
-LIBRARY_NAME = liblog_library.so
+# Названия файлов
+TARGET = logger_app
+LIBRARY = liblog_library.so
+SOURCES = main.cpp
+LIBRARY_SOURCES = record.cpp log_library.cpp
+LIBRARY_OBJECTS = $(LIBRARY_SOURCES:.cpp=.o)
+OBJECTS = $(SOURCES:.cpp=.o)
 
-SRC_FILES = log_library.cpp record.cpp
-OBJ_FILES = $(SRC_FILES:.cpp=.o)
+# Директории
+BUILD_DIR = build
+LIB_DIR = lib
 
-INCLUDE_DIRS = -I.
+# Правило по умолчанию
+all: $(TARGET)
 
-all: $(LIBRARY_NAME)
+# Сборка динамической библиотеки
+$(LIB_DIR)/$(LIBRARY): $(LIBRARY_OBJECTS)
+	@mkdir -p $(LIB_DIR)
+	$(CXX) $(LDFLAGS) -o $@ $(LIBRARY_OBJECTS)
 
-$(LIBRARY_NAME): $(OBJ_FILES)
-	$(CC) $(LDFLAGS) -o $@ $^
+# Сборка исполняемого файла
+$(TARGET): $(OBJECTS) $(LIB_DIR)/$(LIBRARY)
+	$(CXX) $(CXXFLAGS) -o $@ $(OBJECTS) -L$(LIB_DIR) -llog_library
 
+# Компиляция объектов
 %.o: %.cpp
-	$(CC) $(CFLAGS) $(INCLUDE_DIRS) -c $< -o $@
+	$(CXX) $(CXXFLAGS) -c $< -o $@
 
+# Очистка
 clean:
-	rm -f $(OBJ_FILES) $(LIBRARY_NAME)
+	rm -rf $(TARGET) $(OBJECTS) $(LIBRARY_OBJECTS) $(LIB_DIR)
 
-.PHONY: all clean
+# Установка библиотеки
+install: $(LIB_DIR)/$(LIBRARY)
+	@sudo cp $(LIB_DIR)/$(LIBRARY) /usr/lib/
+	@sudo ldconfig
+	@echo "Library installed to /usr/lib/"
+
+# Удаление библиотеки
+uninstall:
+	@sudo rm -f /usr/lib/$(LIBRARY)
+	@sudo ldconfig
+	@echo "Library removed from /usr/lib/"
+
+.PHONY: all clean install uninstall
