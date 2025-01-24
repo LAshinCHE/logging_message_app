@@ -19,6 +19,7 @@ Logger::Logger(const std::string& filePath) : logFilePath(filePath) {
 Logger::~Logger() {
 }
 
+// Добавляет наше сообщение в файл
 void Logger::LogMessage(const std::string& message, int messageLevel) {
     std::ofstream file(logFilePath, std::ios::app);
     if (!file.is_open()) {
@@ -29,6 +30,7 @@ void Logger::LogMessage(const std::string& message, int messageLevel) {
     file  << rec.toCSV() << std::endl;
 }
 
+// Внутренний метод класса читает все записи в файле возвращает вектор из записей
 std::vector<Record> Logger::ReadAllMessage(){
     std::vector<Record> records;
     std::ifstream file(logFilePath);
@@ -48,6 +50,7 @@ std::vector<Record> Logger::ReadAllMessage(){
     return records;
 }
 
+// Меняет уровень важности класса
 void Logger::ChangeMessageLevel(const std::string& message, const int& newLevel) {
     std::vector<Record> records = Logger::ReadAllMessage();
 

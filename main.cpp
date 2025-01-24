@@ -1,11 +1,12 @@
-#include "log_library.h"
+#include "log_library/log_library.h"
 #include <iostream>
 #include <string>
 #include <thread>
 #include <queue>
 #include <mutex>
 #include <condition_variable>
-#include <atomic>g
+#include <atomic>
+
 struct LogEntry {
     std::string message;
     int importanceLevel;
